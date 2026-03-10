@@ -34,7 +34,7 @@ jobs:
         run: cat semgrep-results.json
 
       - name: Guardar reporte de Semgrep como artefacto
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: semgrep-report
           path: semgrep-results.json        
