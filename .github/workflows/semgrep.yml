@@ -1,0 +1,41 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow file requires a free account on Semgrep.dev to
+# manage rules, file ignores, notifications, and more.
+#
+# See https://semgrep.dev/docs
+
+name: Semgrep
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]  
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar el codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar semgrep
+        run: pip install semgrep
+
+      - name: Ejecutar análisis de seguridad
+        run: semgrep --config=auto --json --output=semgrep-results.json
+
+      - name: Mostrar resultados en la salida de GitHub Actions
+        run: cat semgrep-results.json
+
+      - name: Guardar reporte de Semgrep como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: semgrep-report
+          path: semgrep-results.json        
+
